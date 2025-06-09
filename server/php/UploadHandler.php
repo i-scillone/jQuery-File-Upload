@@ -337,8 +337,9 @@ class UploadHandler
     }
 
     function get_config_bytes($val) {
-        $val = trim($val);
-        $last = strtolower($val[strlen($val)-1]);
+        preg_match('/(\d*)([gmk])/i',$val,$found);
+        $val=$found[1];
+        $last=strtolower($found[2]);
         switch($last) {
             case 'g':
                 $val *= 1024;
@@ -441,7 +442,8 @@ class UploadHandler
             $name = $this->upcount_name($name);
         }
         // Keep an existing filename if this is part of a chunked upload:
-        $uploaded_bytes = $this->fix_integer_overflow(intval($content_range[1]));
+        if (is_null($content_range)) $uploaded_bytes=0;
+        else $uploaded_bytes = $this->fix_integer_overflow(intval($content_range[1]));
         while(is_file($this->get_upload_path($name))) {
             if ($uploaded_bytes === $this->get_file_size(
                     $this->get_upload_path($name))) {
