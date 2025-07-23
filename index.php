@@ -21,7 +21,7 @@
     $(function(){
         var progress=$('#progress').progressbar({ value: false });
         $('#source').fileupload({
-            url: 'http://localhost:8080/jQuery-File-Upload/server/php/index.php',
+            url: 'server/php/index.php',
             dataType: 'json',
             maxChunkSize: 10000000,
             start: function(e){
